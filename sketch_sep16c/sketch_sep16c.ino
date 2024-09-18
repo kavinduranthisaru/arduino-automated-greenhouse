@@ -1,4 +1,4 @@
-#define BLYNK_PRINT Serial
+/*#define BLYNK_PRINT Serial
 #define BLYNK_TEMPLATE_ID "TMPL69r-yXF-O"
 #define BLYNK_TEMPLATE_NAME "Group P11 1"
 #define BLYNK_AUTH_TOKEN "CJTZHTAItg-x9yoAH99yg45YIEHhuauW"
@@ -13,14 +13,12 @@
 #include "WiFi.h"
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
-#include <LiquidCrystal_I2C.h>
 
-#define SM_PIN 4 // D4 PIN
-#define LDR_PIN 2 // D2 PIN
-#define DHT_PIN 5 // D5 PIN
+#define SM_PIN 32 // D32 PIN
+#define LDR_PIN 33 // D33 PIN
+#define DHT_PIN 27 // D27 PIN
 
 DHT dhtSensor(DHT_PIN,DHT11);
-LiquidCrystal_I2C lcd(0x01, 16, 2); // SDA -TXD SCL- D22
 
 void connectToWiFi() {
   Serial.println("Connecting to WiFi...");
@@ -29,7 +27,7 @@ void connectToWiFi() {
   unsigned long startAttemptTime = millis();
   while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_TIMEOUT_MS) {
     if (WiFi.status() != WL_CONNECTED) {
-      Serial.print(" Failed!");
+      Serial.println(" Failed!");
       // take action
     } else {
       Serial.println("Connected!");
@@ -39,15 +37,30 @@ void connectToWiFi() {
   }
 }
 
+void test() {
+  digitalWrite(2, HIGH);
+  digitalWrite(4, HIGH);
+  digitalWrite(5, HIGH);
+  digitalWrite(18, HIGH);
+  delay(30000);
+  digitalWrite(2, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(18, LOW);
+
+}
+
 void setup() {
   Serial.begin(115200);
   connectToWiFi();
   Blynk.begin(BLYNK_AUTH_TOKEN, WIFI_SSID, WIFI_PASSWORD, "blynk.cloud", 80);
   dhtSensor.begin();
-  
-  // Start I2C communication
-  lcd.init();
-  lcd.noBacklight();
+  pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(18, OUTPUT);
+
+  test();
 
 }
 
@@ -66,11 +79,6 @@ void loop() {
   Blynk.virtualWrite(V2, ldrPercentage);
   Blynk.virtualWrite(V3, smPercentage);
 
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Temp: ");
-  lcd.print(temperature);
-
   Serial.print("Soil moisture value: ");
   Serial.print(smPercentage);
   Serial.println("%");
@@ -86,5 +94,29 @@ void loop() {
 
   delay(2000);
 
+} */
+
+
+#include <Arduino.h>
+
+void setup() {
+  pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(18, OUTPUT);
+
 }
 
+void loop() {
+  digitalWrite(2, HIGH);
+  digitalWrite(4, HIGH);
+  digitalWrite(5, HIGH);
+  digitalWrite(18, HIGH);
+  delay(20000);
+  digitalWrite(2, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(18, LOW);
+  delay(10000);
+
+}
