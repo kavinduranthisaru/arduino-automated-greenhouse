@@ -16,20 +16,20 @@
 #include <BlynkSimpleEsp32.h>
 
 // SENSORS PIN DEFINE
-#define SM_PIN 32 // G32 PIN
-#define LDR_PIN 33 // G33 PIN
 #define DHT_PIN 27 // G27 PIN
+#define LDR_PIN 33 // G33 PIN
+#define SM_PIN 32 // G32 PIN
 
 // ACTUATORS PIN DEFINE
 #define HEATER_PIN 4 // G4 PIN
 #define COOLER_PIN 5 // G5 PIN
-#define WATER_PUMP_PIN 16 // G16 PIN
 #define DAY_LIGHT_PIN 17 // G17 PIN
+#define WATER_PUMP_PIN 16 // G16 PIN
 
-#define temperatureUpper 30;
-#define temperatureLower 28;
-#define ldrLimit 36;
-#define smLimit 50;
+#define TEMPERATURE_UPPER 30;
+#define TEMPERATURE_LOWER 28;
+#define LDR_LIMIT 36;
+#define SM_LIMIT 50;
 
 DHT dhtSensor(DHT_PIN,DHT11);
 
@@ -57,8 +57,6 @@ void connectToWiFi() {
     }
   }
 }
-
-
 
 void setup() {
   Serial.begin(115200);
