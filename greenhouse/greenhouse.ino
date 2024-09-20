@@ -27,16 +27,12 @@
 #define WATER_PUMP_PIN 16 // G16 PIN
 
 #define TEMPERATURE_UPPER 30;
-#define TEMPERATURE_LOWER 28;
+#define TEMPERATURE_LOWER 25;
+#define TEMPERATURE_LIMIT 28;
 #define LDR_LIMIT 36;
 #define SM_LIMIT 50;
 
 DHT dhtSensor(DHT_PIN,DHT11);
-
-void handleLight(int ldrValue) {
-
-
-}
 
 void connectToWiFi() {
   Serial.println("Connecting to WiFi...");
@@ -58,6 +54,54 @@ void connectToWiFi() {
   }
 }
 
+void WiFiStatus() {
+   if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Not Connected!");
+
+   } else {
+    Serial.println("Connected!");
+
+   }
+}
+
+void temperatureHandler() {
+  if (temperature > TEMPERATURE_UPPER) {
+    digitalWrite(HEATER_PIN, HIGH);
+
+  } else if (temperature == TEMPERATURE_LIMIT) {
+    digitalWrite(HEATER_PIN, LOW);
+
+  }
+
+  if (temperature < TEMPERATURE_LOWER) {
+    digitalWrite(COOLER_PIN, HIGH);
+
+  } else if (temperature == TEMPERATURE_LIMIT) {
+    digitalWrite(COOLER_PIN, LOW);
+
+  }
+ }
+
+ void sunlightHandler() {
+  if (ldrPercentage < LDR_LIMIT) {
+    digitalWrite(DAY_LIGHT_PIN, HIGH);
+
+  } else if (ldrPercentage > LDR_LIMIT) {
+    digitalWrite(DAY_LIGHT_PIN, LOW);
+
+  }
+ }
+
+ void soilmoistureHandler() {
+  if (smPercentage < SM_LIMIT) {
+    digitalWrite(WATER_PUMP_PIN, HIGH);
+
+  } else if (smPercentage > SM_LIMIT) {
+    digitalWrite(WATER_PUMP_PIN, LOW);
+
+  }
+ }
+
 void setup() {
   Serial.begin(115200);
   connectToWiFi();
@@ -78,6 +122,11 @@ void loop() {
   
   float smPercentage = ((4095 - smValue) / 4095.0) * 100.0;
   float ldrPercentage = ((1900 - lightLevel) / 1900.0) * 100.0;
+
+  WiFiStatus();
+  temperatureHandler();
+  sunlightHandler();
+  soilmoistureHandler();
   
   Blynk.virtualWrite(V0, temperature);
   Blynk.virtualWrite(V1, humidity);
