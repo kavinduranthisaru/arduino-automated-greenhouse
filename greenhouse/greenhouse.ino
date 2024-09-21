@@ -99,25 +99,43 @@ void dataReadAndWrite() {
 
   int TEMP_THRESHOLD = (TEMP_UPPER + TEMP_LOWER) / 2;
 
-  // COOLER HANDLER
-  if (temperature > TEMP_UPPER) {
-    digitalWrite(COOLER_PIN, LOW);
-    Blynk.virtualWrite(V12, 1);
-  } else if (temperature <= TEMP_THRESHOLD) {
+  // VALIDATION OF LOWER AND UPPER TEMPERATURE LIMITS
+  if (TEMP_LOWER < TEMP_UPPER) {
+    Serial.println("Error message: No error messages. \n");
+    Blynk.virtualWrite(V16, "No error messages.");
+
+    // COOLER HANDLER
+    if (temperature > TEMP_UPPER) {
+      digitalWrite(COOLER_PIN, LOW);
+      Blynk.virtualWrite(V12, 1);
+
+    } else if (temperature <= TEMP_THRESHOLD) {
+      digitalWrite(COOLER_PIN, HIGH);
+      Blynk.virtualWrite(V12, 0);
+
+    }
+
+    // HEATER HANDLER
+    if (temperature < TEMP_LOWER) {
+      digitalWrite(HEATER_PIN, LOW);
+      Blynk.virtualWrite(V13, 1);
+
+    } else if (temperature >= TEMP_THRESHOLD) {
+      digitalWrite(HEATER_PIN, HIGH);
+      Blynk.virtualWrite(V13, 0);
+
+    }
+  } else {
+    Serial.println("Error message: The upper temperature limit must exceed the lower limit. \n");
+    Blynk.virtualWrite(V16, "The upper temperature limit must exceed the lower limit.");
     digitalWrite(COOLER_PIN, HIGH);
     Blynk.virtualWrite(V12, 0);
-  }
-
-  // HEATER HANDLER
-  if (temperature < TEMP_LOWER) {
-    digitalWrite(HEATER_PIN, LOW);
-    Blynk.virtualWrite(V13, 1);
-
-  } else if (temperature >= TEMP_THRESHOLD) {
     digitalWrite(HEATER_PIN, HIGH);
     Blynk.virtualWrite(V13, 0);
-
+    
   }
+
+  
 
   // DAY LIGHT HANDLER
   if (ldrPercentage < LDR_THRESHOLD) {
