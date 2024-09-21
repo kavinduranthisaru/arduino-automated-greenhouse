@@ -36,7 +36,7 @@ int SM_THRESHOLD = 50;
 DHT dhtSensor(DHT_PIN,DHT11);
 BlynkTimer timer;
 
-int DATA_INTERVAL = 2000L;
+int DATA_INTERVAL = 3000L;
 int WiFi_INTERVAL = 30000L;
 
 void connectToWiFi() {
@@ -88,7 +88,7 @@ BLYNK_WRITE(V7) {
   SM_THRESHOLD = param.asInt();
 }
 
-void sendData() {
+void dataReadAndWrite() {
   int smValue = analogRead(SM_PIN);
   int ldrValue = analogRead(LDR_PIN);
   float temperature = dhtSensor.readTemperature();
@@ -166,7 +166,7 @@ void setup() {
   dhtSensor.begin();
   connectToWiFi();
   Blynk.begin(BLYNK_AUTH_TOKEN, WIFI_SSID, WIFI_PASSWORD, "blynk.cloud", 80);
-  timer.setInterval(DATA_INTERVAL, sendData);
+  timer.setInterval(DATA_INTERVAL, dataReadAndWrite);
   timer.setInterval(WiFi_INTERVAL, WiFiStatus);
 
   pinMode(4, OUTPUT);
