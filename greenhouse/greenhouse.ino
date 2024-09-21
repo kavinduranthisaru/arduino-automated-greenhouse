@@ -37,7 +37,7 @@ DHT dhtSensor(DHT_PIN,DHT11);
 BlynkTimer timer;
 
 int DATA_INTERVAL = 3000L;
-int WiFi_INTERVAL = 30000L;
+int WiFi_INTERVAL = 60000L;
 
 void connectToWiFi() {
   Serial.println("Connecting to WiFi...");
@@ -101,7 +101,6 @@ void dataReadAndWrite() {
 
   // VALIDATION OF LOWER AND UPPER TEMPERATURE LIMITS
   if (TEMP_LOWER < TEMP_UPPER) {
-    Serial.println("Error message: No error messages. \n");
     Blynk.virtualWrite(V16, "No error messages.");
 
     // COOLER HANDLER
