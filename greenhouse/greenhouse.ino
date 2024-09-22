@@ -16,6 +16,7 @@
 #include "WiFi.h"
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
+#include <time.h>
 
 // SENSORS PIN DEFINE
 #define DHT_PIN 27 // G27 PIN
@@ -33,8 +34,15 @@ int TEMP_LOWER = 28;
 int LDR_THRESHOLD = 36;
 int SM_THRESHOLD = 50;
 
+int START_TIME = 6;
+int END_TIME = 19;
+
 DHT dhtSensor(DHT_PIN,DHT11);
 BlynkTimer timer;
+
+const char* ntpServer = "pool.ntp.org";
+const long  gmtOffset_sec = 19800;
+const int   daylightOffset_sec = 0;
 
 int DATA_INTERVAL = 3000L;
 int WiFi_INTERVAL = 60000L;
@@ -69,7 +77,7 @@ void WiFiStatus() {
 }
 
 BLYNK_CONNECTED() {
-  Blynk.syncVirtual(V4, V5, V6, V7);
+  Blynk.syncVirtual(V4, V5, V6, V7, V17, V18);
 }
 
 BLYNK_WRITE(V4) {
@@ -88,6 +96,24 @@ BLYNK_WRITE(V7) {
   SM_THRESHOLD = param.asInt();
 }
 
+BLYNK_WRITE(V17) {
+  START_TIME = param.asInt();
+}
+
+BLYNK_WRITE(V18) {
+  END_TIME = param.asInt();
+}
+
+bool isTimeBetween (int startHour, int endHour) {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time \n");
+    return false;
+  }
+  int currentHour = timeinfo.tm_hour;
+  return currentHour >= startHour && currentHour < endHour;
+}
+
 void dataReadAndWrite() {
   int smValue = analogRead(SM_PIN);
   int ldrValue = analogRead(LDR_PIN);
@@ -101,8 +127,6 @@ void dataReadAndWrite() {
 
   // VALIDATION OF LOWER AND UPPER TEMPERATURE LIMITS
   if (TEMP_LOWER < TEMP_UPPER) {
-    Blynk.virtualWrite(V16, "No error messages.");
-
     // COOLER HANDLER
     if (temperature > TEMP_UPPER) {
       digitalWrite(COOLER_PIN, LOW);
@@ -134,17 +158,31 @@ void dataReadAndWrite() {
     
   }
 
-  
+  // VALIDATION OF START TIME AND END TIME OF LDR
+  if (START_TIME < END_TIME) {
+    // DAY LIGHT HANDLER
+    if (ldrPercentage < LDR_THRESHOLD && isTimeBetween(START_TIME, END_TIME)) {
+      digitalWrite(DAY_LIGHT_PIN, LOW);
+      Blynk.virtualWrite(V14, 1);
 
-  // DAY LIGHT HANDLER
-  if (ldrPercentage < LDR_THRESHOLD) {
-    digitalWrite(DAY_LIGHT_PIN, LOW);
-    Blynk.virtualWrite(V14, 1);
+    } else {
+      digitalWrite(DAY_LIGHT_PIN, HIGH);
+      Blynk.virtualWrite(V14, 0);
+
+    }
 
   } else {
+    Serial.println("Error message: The end time must exceed the start time of LDR. \n");
+    Blynk.virtualWrite(V16, "The end time must exceed the start time of LDR.");
     digitalWrite(DAY_LIGHT_PIN, HIGH);
     Blynk.virtualWrite(V14, 0);
 
+  }
+
+  // NO ERROR MESSAGE
+  if (TEMP_LOWER < TEMP_UPPER && START_TIME < END_TIME) {
+    Blynk.virtualWrite(V16, "No error messages.");
+    
   }
 
   // WATER PUMP HANDLER
@@ -182,6 +220,9 @@ void setup() {
   Serial.begin(115200);
   dhtSensor.begin();
   connectToWiFi();
+
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
   Blynk.begin(BLYNK_AUTH_TOKEN, WIFI_SSID, WIFI_PASSWORD, "blynk.cloud", 80);
   timer.setInterval(DATA_INTERVAL, dataReadAndWrite);
   timer.setInterval(WiFi_INTERVAL, WiFiStatus);
@@ -195,6 +236,8 @@ void setup() {
   Blynk.virtualWrite(V5, TEMP_LOWER);
   Blynk.virtualWrite(V6, LDR_THRESHOLD);
   Blynk.virtualWrite(V7, SM_THRESHOLD);
+  Blynk.virtualWrite(V17, START_TIME);
+  Blynk.virtualWrite(V18, END_TIME);
 
   digitalWrite(COOLER_PIN, LOW);
   digitalWrite(HEATER_PIN, LOW);
