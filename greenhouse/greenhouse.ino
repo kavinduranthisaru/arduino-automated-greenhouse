@@ -33,9 +33,8 @@ int TEMP_UPPER = 32;
 int TEMP_LOWER = 28;
 int LDR_THRESHOLD = 36;
 int SM_THRESHOLD = 50;
-
-int START_TIME = 6;
-int END_TIME = 19;
+int START_TIME = 0;
+int END_TIME = 24;
 
 DHT dhtSensor(DHT_PIN,DHT11);
 BlynkTimer timer;
