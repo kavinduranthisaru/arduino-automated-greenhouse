@@ -5,7 +5,7 @@
 #define BLYNK_TEMPLATE_NAME "Group P11 1"
 #define BLYNK_AUTH_TOKEN "atVBx-PFCYq1ifT__EuDDuPuCQgDxdD5"
 
-#define WIFI_SSID "Im Not A Witch Im Your Wifi ;)"
+#define WIFI_SSID "SLT_Fiber"
 #define WIFI_PASSWORD "Walura@458699%"
 #define WIFI_TIMEOUT_MS 20000
 
