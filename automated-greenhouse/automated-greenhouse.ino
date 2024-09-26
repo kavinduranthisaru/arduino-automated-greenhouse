@@ -110,7 +110,7 @@ bool isTimeBetween (int startHour, int endHour) {
     return false;
   }
   int currentHour = timeinfo.tm_hour;
-  return currentHour >= startHour && currentHour < endHour;
+  return currentHour >= startHour && currentHour <= endHour;
 }
 
 void dataReadAndWrite() {
