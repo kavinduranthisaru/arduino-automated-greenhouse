@@ -119,8 +119,8 @@ void dataReadAndWrite() {
   float temperature = dhtSensor.readTemperature();
   float humidity = dhtSensor.readHumidity();
   
-  float smPercentage = ((4095 - smValue) / 4095.0) * 100.0;
-  float ldrPercentage = ((4095 - ldrValue) / 4095.0) * 100.0;
+  float smPercentage = map(smValue, 0, 4095, 100, 0);
+  float ldrPercentage = map(ldrValue. 0, 4095, 100, 0);
 
   int TEMP_THRESHOLD = (TEMP_UPPER + TEMP_LOWER) / 2;
 
@@ -248,4 +248,3 @@ void loop() {
   timer.run();
   
 }
-
