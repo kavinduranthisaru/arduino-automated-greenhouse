@@ -1,7 +1,7 @@
 // Greenhouse Project - P11-1
 
 #define BLYNK_PRINT Serial
-#define BLYNK_TEMPLATE_ID "TMPL69r-yXF-O"
+#define BLYNK_TEMPLATE_ID "TMPL69r-123-O"
 #define BLYNK_TEMPLATE_NAME "Group P11 1"
 #define BLYNK_AUTH_TOKEN "atVBx-PFCYq1ifT__Eu123456789"
 
