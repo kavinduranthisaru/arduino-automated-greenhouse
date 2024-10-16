@@ -8,7 +8,7 @@ The Automated Greenhouse Project utilizes an ESP32 microcontroller, various sens
 - Dinithi Wickramasekara
 - Sasindu Amaraguru
 - Tharushi Samarasinghe
-- Hasindu Ketipe Kankanamge
+- Hasindu Methsara
 - Amesha Rajapaksha
 
 ## Features
