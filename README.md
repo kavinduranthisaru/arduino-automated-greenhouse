@@ -1,4 +1,4 @@
-# Automated Greenhouse Project (P11-1)
+# Automated Greenhouse Project
 
 ## Overview
 The Automated Greenhouse Project utilizes an ESP32 microcontroller, various sensors, and actuators to create a smart greenhouse environment. This system automatically monitors and adjusts temperature, humidity, light levels, and soil moisture to maintain optimal growing conditions for plants.
