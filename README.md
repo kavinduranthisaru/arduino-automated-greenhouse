@@ -17,7 +17,7 @@ The Automated Greenhouse Project utilizes an ESP32 microcontroller, various sens
 - **Soil Moisture Management**: A soil moisture sensor tracks moisture levels in the soil. A 12V water pump automatically waters the plants when the soil becomes too dry.
   
 ## Power Efficiency
-We utilized buck converters to step down the voltage from a 12V battery pack to power the system, ensuring efficient energy usage compared to traditional linear regulators like the LM7805.
+We utilized buck converters to step down the voltage from a 12V battery pack to power the system, ensuring efficient energy usage.
 
 ## Actuators
 - **Heater & Cooler**: Two 80mm 12V fans act as a heater and cooler, controlled automatically via relay modules.
