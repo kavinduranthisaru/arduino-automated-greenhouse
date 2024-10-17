@@ -27,5 +27,5 @@ We utilized buck converters to step down the voltage from a 12V power pack to po
 ## IoT Integration
 Using the Blynk IoT platform, the system allows for remote monitoring and control through Wi-Fi, enabling real-time adjustments to environmental conditions.
 
-##Circuit Diagram
+## Circuit Diagram
 <img src="https://i.ibb.co/7XhpRPq/Circuit-diagram-P11-1.png" alt="Circuit-diagram-P11-1">
