@@ -29,3 +29,4 @@ Using the Blynk IoT platform, the system allows for remote monitoring and contro
 
 ## Circuit Diagram
 <img src="https://i.ibb.co/kxkWgs7/Circuit-diagram-P11-1.jpg" alt="Circuit-diagram-P11-1" border="0" alt="Circuit-diagram-P11-1" />
+![Circuit-diagram-P11-1](https://i.ibb.co/kxkWgs7/Circuit-diagram-P11-1.jpg)
